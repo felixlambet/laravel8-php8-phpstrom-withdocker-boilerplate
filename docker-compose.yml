@@ -1,0 +1,35 @@
+version: "3.8"
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: app.dockerfile
+    volumes:
+      - ./:/var/www
+    networks:
+      - web_app
+
+  web:
+    build:
+      context: ./
+      dockerfile: web.dockerfile
+    volumes:
+      - ./:/var/www
+    ports:
+      - "80:80"
+    networks:
+      - web_app
+
+  database:
+    image: mysql:5.6
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: MYDB
+    ports:
+      - "3306:3306"
+    networks:
+      - web_app
+
+networks:
+  web_app:
+    name: web_app
